@@ -1,5 +1,5 @@
 import streams from "../apis/streams";
-import createBrowserHistory from "../history";
+import history from "../history";
 import {
   SIGN_IN,
   SIGN_OUT,
@@ -10,7 +10,7 @@ import {
   EDIT_STREAM
 } from "./types";
 export const signIn = userId => {
-  console.log({ actionUserId: userId });
+  // console.log({ actionUserId: userId });
   return { type: SIGN_IN, payload: userId };
 };
 
@@ -20,7 +20,7 @@ export const signOut = () => {
 
 export const createStream = formValues => async (dispatch, getState) => {
   //  console.log({ getState });
-  console.log({ getState: getState().auth });
+  //  console.log({ getState: getState().auth });
   const { userId } = getState().auth;
   const response = await streams.post("http://localhost:3001/streams", {
     // debug later
@@ -29,7 +29,7 @@ export const createStream = formValues => async (dispatch, getState) => {
   });
   //console.log({ response });
   dispatch({ type: CREATE_STREAMS, payload: response.data });
-  //return createBrowserHistory.push("/");
+  return history.push("/");
 };
 export const fetchStreams = () => async dispatch => {
   const response = await streams.get("http://localhost:3001/streams");
@@ -44,14 +44,16 @@ export const fetchStream = id => async dispatch => {
 };
 
 export const editStream = (id, formValues) => async dispatch => {
-  const response = await streams.put(
+  const response = await streams.patch(
     `http://localhost:3001/streams/${id}`,
     formValues
   );
   dispatch({ type: EDIT_STREAM, payload: response.data });
+  return history.push("/");
 };
 
 export const deleteStream = id => async dispatch => {
-  const response = await streams.delete(`http://localhost:3001/streams/${id}`);
+  await streams.delete(`http://localhost:3001/streams/${id}`);
   dispatch({ type: DELETE_STREAM, payload: id });
+  return history.push("/");
 };

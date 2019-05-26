@@ -1,14 +1,14 @@
-import {SIGN_IN, SIGN_OUT} from "../actions/types";
+import { SIGN_IN, SIGN_OUT } from "../actions/types";
 
 const INITIAL_STATE = {
   isSignedIn: null,
   isUserId: null
 };
 
-export default(state = INITIAL_STATE, action) => {
+export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SIGN_IN:
-      console.log({userId: action.payload});
+      //  console.log({userId: action.payload});
       return {
         ...state,
         isSignedIn: true,
@@ -22,11 +22,10 @@ export default(state = INITIAL_STATE, action) => {
         userId: null
       };
 
-    default:
-      {
-        return {
-          ...state
-        };
-      }
+    default: {
+      return {
+        ...state
+      };
+    }
   }
 };
